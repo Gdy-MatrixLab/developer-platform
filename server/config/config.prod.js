@@ -2,11 +2,13 @@
  * @Author: Whzcorcd
  * @Date: 2020-07-09 12:22:57
  * @LastEditors: Wzhcorcd
- * @LastEditTime: 2020-07-28 14:18:47
+ * @LastEditTime: 2020-07-28 16:20:12
  * @Description: file content
  */
 
 'use strict'
+
+const Sequelize = require('sequelize')
 
 module.exports = () => {
   /**
@@ -22,7 +24,7 @@ module.exports = () => {
     username: 'root',
     password: 'guangdianyun',
     database: 'developer-platform',
-    operatorsAliases: false,
+    operatorsAliases: Sequelize.Op,
   }
 
   config.redis = {
