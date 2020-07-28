@@ -1,6 +1,6 @@
 {
   "name": "developer-platform",
-  "version": "0.3.2",
+  "version": "0.4.6",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
