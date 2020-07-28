@@ -2,7 +2,7 @@
  * @Author: Whzcorcd
  * @Date: 2020-07-09 12:22:57
  * @LastEditors: Wzhcorcd
- * @LastEditTime: 2020-07-15 14:59:22
+ * @LastEditTime: 2020-07-28 14:18:47
  * @Description: file content
  */
 
@@ -20,8 +20,8 @@ module.exports = () => {
     host: '127.0.0.1',
     port: 3306,
     username: 'root',
-    password: '123456',
-    database: 'dynamic_code',
+    password: 'guangdianyun',
+    database: 'developer-platform',
     operatorsAliases: false,
   }
 
@@ -29,7 +29,7 @@ module.exports = () => {
     client: {
       port: 6379,
       host: '127.0.0.1',
-      password: 'whz18267590821',
+      password: 'guangdianyun',
       db: 0,
       weakDependent: true,
     },
