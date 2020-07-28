@@ -2,13 +2,11 @@
  * @Author: Whzcorcd
  * @Date: 2020-07-09 12:22:50
  * @LastEditors: Wzhcorcd
- * @LastEditTime: 2020-07-28 16:20:43
+ * @LastEditTime: 2020-07-28 16:39:25
  * @Description: file content
  */
 
 'use strict'
-
-const Sequelize = require('sequelize')
 
 module.exports = () => {
   /**
@@ -24,7 +22,7 @@ module.exports = () => {
     username: 'root',
     password: '123456',
     database: 'dynamic_code',
-    operatorsAliases: Sequelize.Op,
+    operatorsAliases: 0,
   }
 
   config.redis = {
