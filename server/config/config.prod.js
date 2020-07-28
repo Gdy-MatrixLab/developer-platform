@@ -2,7 +2,7 @@
  * @Author: Whzcorcd
  * @Date: 2020-07-09 12:22:57
  * @LastEditors: Wzhcorcd
- * @LastEditTime: 2020-07-28 19:28:19
+ * @LastEditTime: 2020-07-28 19:59:48
  * @Description: file content
  */
 
@@ -23,9 +23,9 @@ module.exports = () => {
     password: 'guangdianyun',
     database: 'developer_platform',
     define: {
-      charset: 'utf8',
+      charset: 'utf8mb4',
       dialectOptions: {
-        collate: 'utf8_general_ci',
+        collate: 'utf8mb4_general_ci',
       },
     },
     operatorsAliases: 0,
