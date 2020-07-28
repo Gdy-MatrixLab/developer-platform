@@ -2,7 +2,7 @@
  * @Author: Whzcorcd
  * @Date: 2020-07-27 13:25:37
  * @LastEditors: Wzhcorcd
- * @LastEditTime: 2020-07-27 17:04:04
+ * @LastEditTime: 2020-07-27 19:47:10
  * @Description: file content
 -->
 <template>
@@ -27,15 +27,15 @@ export default {
   },
   async mounted() {
     const { session } = this.$route.params
-    this.session = session
+    this.session = session || ''
 
-    await this.getData()
+    session && (await this.getData())
 
     if (!this.player) {
       this.player = new RRWebPlayer({
         target: document.getElementById('replayer'),
         data: {
-          events: this.data || events,
+          events: this.data.length > 0 ? this.data : events,
           skipInactive: true,
           showDebug: false,
           autoPlay: false,

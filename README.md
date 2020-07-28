@@ -1,6 +1,6 @@
 # Developer Platform
 
-**基于 Egg.js 的 RESTful 风格开发者平台**
+**基于 Egg.js 的 RESTful 风格云平台开发者平台**
 
 ## 技术选型
 

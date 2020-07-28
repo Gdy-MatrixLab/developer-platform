@@ -2,9 +2,14 @@
  * @Author: Whzcorcd
  * @Date: 2020-07-15 18:25:19
  * @LastEditors: Wzhcorcd
- * @LastEditTime: 2020-07-17 17:09:12
+ * @LastEditTime: 2020-07-28 11:07:40
  * @Description: file content
  */
+import dayjs from 'dayjs'
+
+export function timeFormat(timestamp = 0) {
+  return dayjs(timestamp * 1000).format('YYYY HH:mm:ss')
+}
 
 export function timeFix() {
   const time = new Date()

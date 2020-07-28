@@ -2,7 +2,7 @@
  * @Author: Whzcorcd
  * @Date: 2020-07-17 15:14:53
  * @LastEditors: Wzhcorcd
- * @LastEditTime: 2020-07-27 16:54:25
+ * @LastEditTime: 2020-07-28 10:59:32
  * @Description: file content
  */
 import { BasicLayout, RouteView, UserLayout } from '@/layouts'
@@ -120,7 +120,7 @@ const routes = [
             }
           },
           {
-            path: '/rrweb/catalogues',
+            path: '/rrweb/catalogues/:project',
             name: 'catalogues',
             component: () =>
               import(
@@ -128,7 +128,8 @@ const routes = [
               ),
             meta: {
               title: '记录条目'
-            }
+            },
+            hidden: true
           }
         ]
       },

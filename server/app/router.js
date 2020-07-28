@@ -2,7 +2,7 @@
  * @Author: Whzcorcd
  * @Date: 2020-07-09 10:36:59
  * @LastEditors: Wzhcorcd
- * @LastEditTime: 2020-07-27 15:51:48
+ * @LastEditTime: 2020-07-28 10:15:48
  * @Description: file content
  */
 
@@ -21,6 +21,14 @@ module.exports = app => {
     controller.user.account
   )
   router.post('/api/v1/user/logout', controller.user.logout)
+
+  // project
+  router.resources(
+    'project',
+    '/api/v1/project',
+    middleware.auth({}, app),
+    controller.project
+  )
 
   // rrweb
   router.resources(

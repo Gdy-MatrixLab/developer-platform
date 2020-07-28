@@ -2,7 +2,7 @@
  * @Author: Whzcorcd
  * @Date: 2020-07-23 11:45:04
  * @LastEditors: Wzhcorcd
- * @LastEditTime: 2020-07-27 15:08:15
+ * @LastEditTime: 2020-07-28 09:26:37
  * @Description: file content
 -->
 <template>
@@ -138,7 +138,7 @@ export default {
   mounted() {
     const { appid } = this.$route.params
     this.appid = appid
-    this.getApplicationConfig()
+    this.appid && this.getApplicationConfig()
   },
   methods: {
     async getApplicationConfig() {

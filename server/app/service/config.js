@@ -2,7 +2,7 @@
  * @Author: Whzcorcd
  * @Date: 2020-07-09 13:43:58
  * @LastEditors: Wzhcorcd
- * @LastEditTime: 2020-07-27 14:54:04
+ * @LastEditTime: 2020-07-28 10:24:35
  * @Description: file content
  */
 
@@ -12,7 +12,7 @@ const Service = require('egg').Service
 
 class ConfigService extends Service {
   /*
-   * 查询所以可用的 app
+   * 查询所有可用的 app
    * @page 当前页数（ 默认 1）
    * @pageSize 单页数目（默认 10）
    */

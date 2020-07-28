@@ -2,7 +2,7 @@
  * @Author: Whzcorcd
  * @Date: 2020-07-17 09:47:09
  * @LastEditors: Wzhcorcd
- * @LastEditTime: 2020-07-27 16:37:08
+ * @LastEditTime: 2020-07-28 10:56:21
  * @Description: file content
 -->
 <template>
@@ -120,8 +120,8 @@
           提交
         </a-button>
       </div>
-    </a-drawer></page-header-wrapper
-  >
+    </a-drawer>
+  </page-header-wrapper>
 </template>
 
 <script>

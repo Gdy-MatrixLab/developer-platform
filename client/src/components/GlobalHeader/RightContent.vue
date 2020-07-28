@@ -2,21 +2,16 @@
  * @Author: Whzcorcd
  * @Date: 2020-07-15 18:25:19
  * @LastEditors: Wzhcorcd
- * @LastEditTime: 2020-07-21 10:37:58
+ * @LastEditTime: 2020-07-28 11:19:34
  * @Description: file content
 -->
 <template>
   <div :class="wrpCls">
-    <avatar-dropdown
-      :menu="showMenu"
-      :current-user="currentUser"
-      :class="prefixCls"
-    />
+    <avatar-dropdown :menu="showMenu" :class="prefixCls" />
   </div>
 </template>
 
 <script>
-import { mapState } from 'vuex'
 import AvatarDropdown from './AvatarDropdown'
 
 export default {
@@ -44,12 +39,10 @@ export default {
   },
   data() {
     return {
-      showMenu: true,
-      currentUser: {}
+      showMenu: true
     }
   },
   computed: {
-    ...mapState({ username: 'user/username' }),
     wrpCls() {
       return {
         'ant-pro-global-header-index-right': true,
@@ -58,13 +51,6 @@ export default {
         }`]: true
       }
     }
-  },
-  mounted() {
-    setTimeout(() => {
-      this.currentUser = {
-        name: 'whz'
-      }
-    }, 1500)
   }
 }
 </script>

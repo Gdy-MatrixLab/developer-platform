@@ -2,7 +2,7 @@
  * @Author: Whzcorcd
  * @Date: 2020-07-27 15:47:43
  * @LastEditors: Wzhcorcd
- * @LastEditTime: 2020-07-27 16:44:59
+ * @LastEditTime: 2020-07-28 10:54:22
  * @Description: file content
  */
 
@@ -19,7 +19,7 @@ class RRwebController extends Controller {
   }
 
   /*
-   * 查询所有可用的项目
+   * 查询所有记录
    * @page 当前页数
    * @pageSize 单页数目
    */
@@ -27,6 +27,7 @@ class RRwebController extends Controller {
     const { ctx, service } = this
 
     const indexRule = {
+      project: { type: 'string', required: true },
       page: { type: 'string', required: false },
       pageSize: { type: 'string', required: false },
     }
@@ -39,8 +40,8 @@ class RRwebController extends Controller {
       return
     }
 
-    const { page, pageSize } = ctx.query
-    const res = await service.rrweb.query(page, pageSize)
+    const { project, page, pageSize } = ctx.query
+    const res = await service.rrweb.query(project, page, pageSize)
 
     if (!res) {
       ctx.returnCtxBody(404, {}, 'not existed')
@@ -49,6 +50,15 @@ class RRwebController extends Controller {
     ctx.returnCtxBody(200, res, 'success')
   }
 
+  /*
+   * 创建新的记录
+   * @project 项目名称
+   * @uin uin
+   * @session session
+   * @data 二进制压缩数据体
+   * @startTime 开始时间戳
+   * @endTime 结束时间戳
+   */
   async create() {
     const { ctx, service } = this
 
@@ -70,6 +80,11 @@ class RRwebController extends Controller {
     }
 
     const { project, uin, session, data, startTime, endTime } = ctx.request.body
+
+    await service.project.create({
+      project,
+    })
+
     const res = await service.rrweb.create({
       project,
       uin: Number(uin),
@@ -86,22 +101,22 @@ class RRwebController extends Controller {
     ctx.returnCtxBody(200, {}, 'success')
   }
 
+  /*
+   * 获取已有的指定记录数据
+   * @id session
+   */
   async show() {
     const { ctx, service } = this
 
-    // id 指代 session
-    const indexRule = {
-      id: { type: 'string' },
-    }
-
     try {
-      ctx.validate(indexRule, ctx.params)
+      ctx.validate(this.appidRule, ctx.params)
     } catch (err) {
       ctx.logger.warn(err.errors)
       ctx.returnCtxBody(400, {}, 'illegal parameters')
       return
     }
 
+    // id 指代 session
     const { id } = ctx.params
     const res = await service.rrweb.get(id)
 
@@ -113,33 +128,28 @@ class RRwebController extends Controller {
   }
 
   async update() {
-    // todo 暂无更新数据功能
+    // TODO 暂无更新数据功能
     const { ctx } = this
 
-    ctx.body = Object.assign({}, this.defaultResponse, {
-      status: -1,
-      data: {},
-      msg: 'not permitted',
-    })
-    ctx.status = 403
+    ctx.returnCtxBody(403, {}, 'not permitted')
   }
 
+  /*
+   * 软删除已有的指定记录数据
+   * @id session
+   */
   async destroy() {
     const { ctx, service } = this
 
-    // id 指代 session
-    const indexRule = {
-      id: { type: 'string' },
-    }
-
     try {
-      ctx.validate(indexRule, ctx.params)
+      ctx.validate(this.appidRule, ctx.params)
     } catch (err) {
       ctx.logger.warn(err.errors)
       ctx.returnCtxBody(400, {}, 'illegal parameters')
       return
     }
 
+    // id 指代 session
     const { id } = ctx.params
     const res = await service.data.delete(id)
 

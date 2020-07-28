@@ -2,18 +2,18 @@
  * @Author: Whzcorcd
  * @Date: 2020-07-15 18:25:19
  * @LastEditors: Wzhcorcd
- * @LastEditTime: 2020-07-21 17:41:22
+ * @LastEditTime: 2020-07-28 11:41:00
  * @Description: file content
 -->
 <template>
-  <a-dropdown v-if="currentUser && currentUser.name" placement="bottomRight">
+  <a-dropdown v-if="username" placement="bottomRight">
     <span class="ant-pro-account-avatar">
       <a-avatar
         size="small"
         src="https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png"
         class="antd-pro-global-header-index-avatar"
       />
-      <span>{{ currentUser.name }}</span>
+      <span>{{ username }}</span>
     </span>
     <template v-slot:overlay>
       <a-menu class="ant-pro-drop-down menu" :selected-keys="[]">
@@ -39,20 +39,19 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 import { Modal } from 'ant-design-vue'
 
 export default {
   name: 'AvatarDropdown',
   props: {
-    currentUser: {
-      type: Object,
-      default: () => null
-    },
     menu: {
       type: Boolean,
       default: true
     }
+  },
+  computed: {
+    ...mapState({ username: state => state.user.username })
   },
   methods: {
     ...mapActions({ Logout: 'user/Logout' }),
@@ -61,7 +60,7 @@ export default {
         title: '确认登出',
         content: '请在完成所有任务流程后，确认登出系统',
         onOk: () => {
-          return this.Logout({ username: this.currentUser.name })
+          return this.Logout({ username: this.username })
             .then(() => {
               this.$router.push({ name: 'login' })
             })

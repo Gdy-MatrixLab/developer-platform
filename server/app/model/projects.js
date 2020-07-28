@@ -1,8 +1,8 @@
 /*
  * @Author: Whzcorcd
- * @Date: 2020-07-09 13:31:32
+ * @Date: 2020-07-28 09:54:18
  * @LastEditors: Wzhcorcd
- * @LastEditTime: 2020-07-28 09:53:43
+ * @LastEditTime: 2020-07-28 09:54:58
  * @Description: file content
  */
 
@@ -11,12 +11,11 @@
 module.exports = app => {
   const { STRING, INTEGER, DATE } = app.Sequelize
 
-  const Users = app.model.define(
-    'users',
+  const Projects = app.model.define(
+    'projects',
     {
       id: { type: INTEGER, primaryKey: true, autoIncrement: true },
-      username: { type: STRING(255), allowNull: false },
-      password: { type: STRING(255), allowNull: false },
+      project: { type: STRING(255), allowNull: false },
       created_at: DATE,
       is_use: { type: INTEGER, defaultValue: 1 },
     },
@@ -25,5 +24,5 @@ module.exports = app => {
     }
   )
 
-  return Users
+  return Projects
 }
