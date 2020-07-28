@@ -22,6 +22,7 @@ module.exports = app => {
       is_use: { type: INTEGER, defaultValue: 1 },
     },
     {
+      timestamps: false,
       freezeTableName: true, // 不自动将表名添加复数
     }
   )

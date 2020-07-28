@@ -2,7 +2,7 @@
  * @Author: Whzcorcd
  * @Date: 2020-07-09 17:25:43
  * @LastEditors: Wzhcorcd
- * @LastEditTime: 2020-07-27 14:56:33
+ * @LastEditTime: 2020-07-28 20:03:34
  * @Description: file content
  */
 
@@ -24,6 +24,7 @@ module.exports = app => {
       is_use: { type: INTEGER, defaultValue: 1 },
     },
     {
+      timestamps: false,
       freezeTableName: true, // 不自动将表名添加复数
     }
   )
