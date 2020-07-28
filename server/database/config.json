@@ -16,7 +16,7 @@
   "production": {
     "username": "root",
     "password": "guangdianyun",
-    "database": "developer-platform",
+    "database": "developer_platform",
     "host": "127.0.0.1",
     "dialect": "mysql"
   }
