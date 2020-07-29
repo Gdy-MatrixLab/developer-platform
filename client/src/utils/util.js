@@ -2,13 +2,17 @@
  * @Author: Whzcorcd
  * @Date: 2020-07-15 18:25:19
  * @LastEditors: Wzhcorcd
- * @LastEditTime: 2020-07-28 11:07:40
+ * @LastEditTime: 2020-07-29 10:57:49
  * @Description: file content
  */
 import dayjs from 'dayjs'
 
+export function getOrigin() {
+  return document.location.origin
+}
+
 export function timeFormat(timestamp = 0) {
-  return dayjs(timestamp * 1000).format('YYYY HH:mm:ss')
+  return dayjs(timestamp * 1000).format('YYYY-MM-DD HH:mm:ss')
 }
 
 export function timeFix() {

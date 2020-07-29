@@ -2,7 +2,7 @@
  * @Author: Whzcorcd
  * @Date: 2020-07-17 15:14:53
  * @LastEditors: Wzhcorcd
- * @LastEditTime: 2020-07-28 10:59:32
+ * @LastEditTime: 2020-07-29 10:56:34
  * @Description: file content
  */
 import { BasicLayout, RouteView, UserLayout } from '@/layouts'
@@ -96,7 +96,7 @@ const routes = [
         name: 'rrweb',
         component: RouteView,
         meta: {
-          title: 'RRWeb 录制回放',
+          title: '错误反馈回放系统',
           keepAlive: true,
           icon: bxAnaalyse
         },
@@ -130,6 +130,75 @@ const routes = [
               title: '记录条目'
             },
             hidden: true
+          }
+        ]
+      },
+      {
+        path: '/polyhedron',
+        name: 'polyhedron',
+        component: RouteView,
+        meta: {
+          title: '多面体自动测评系统',
+          keepAlive: true,
+          icon: bxAnaalyse
+        },
+        children: [
+          {
+            path: '/polyhedron/lite',
+            name: 'lite',
+            component: () =>
+              import(
+                /* webpackChunkName: "polyhedron" */ '@/views/polyhedron/Lite'
+              ),
+            meta: {
+              title: '简易配置'
+            }
+          }
+        ]
+      },
+      {
+        path: '/audit',
+        name: 'audit',
+        component: RouteView,
+        meta: {
+          title: '平台审计系统',
+          keepAlive: true,
+          icon: bxAnaalyse
+        },
+        children: [
+          {
+            path: '/audit/controlpanel',
+            name: 'controlpanel',
+            component: () =>
+              import(
+                /* webpackChunkName: "controlpanel" */ '@/views/audit/Controlpanel'
+              ),
+            meta: {
+              title: '审计面板'
+            }
+          }
+        ]
+      },
+      {
+        path: '/account',
+        name: 'account',
+        component: RouteView,
+        meta: {
+          title: '账户综合管理系统',
+          keepAlive: true,
+          icon: bxAnaalyse
+        },
+        children: [
+          {
+            path: '/account/console',
+            name: 'console',
+            component: () =>
+              import(
+                /* webpackChunkName: "account" */ '@/views/account/Console'
+              ),
+            meta: {
+              title: '管理控制台'
+            }
           }
         ]
       },

@@ -2,7 +2,7 @@
  * @Author: Whzcorcd
  * @Date: 2020-07-23 11:45:04
  * @LastEditors: Wzhcorcd
- * @LastEditTime: 2020-07-28 09:26:37
+ * @LastEditTime: 2020-07-29 10:39:45
  * @Description: file content
 -->
 <template>
@@ -12,20 +12,38 @@
         <a-card :loading="loading" title="应用配置" :bordered="false">
           <a-button
             slot="extra"
+            type="default"
+            style="margin-right: 10px"
+            :disabled="defaultAppConfig === {}"
+            @click="restoreApplicationConfig"
+          >
+            还原配置
+          </a-button>
+          <a-button
+            slot="extra"
             type="primary"
             @click="updateApplicationConfig"
           >
             发布配置
           </a-button>
+
           <a-form-model ref="form" :model="appConfig" v-bind="formItemLayout">
-            <a-form-model-item ref="appid" label="应用 Appid" prop="appid">
+            <a-form-model-item ref="appid" label="Appid" prop="appid">
               <span style="font-weight: bold">{{ appConfig.appid }}</span>
             </a-form-model-item>
-            <a-form-model-item ref="appid" label="应用名称" prop="project">
+            <a-form-model-item ref="appid" label="发布地址" prop="appid">
+              <span style="font-weight: bold">
+                {{ getOrigin }}/api/v1/source/{{ appConfig.appid }}
+              </span>
+            </a-form-model-item>
+            <a-form-model-item ref="project" label="应用名称" prop="project">
               <a-input v-model="appConfig.project" />
             </a-form-model-item>
-            <a-form-model-item ref="appid" label="应用描述" prop="desc">
+            <a-form-model-item ref="desc" label="应用描述" prop="desc">
               <a-input v-model="appConfig.desc" />
+            </a-form-model-item>
+            <a-form-model-item ref="prod" label="生产环境" prop="prod">
+              <a-switch default-checked @change="handleSwitchChange($event)" />
             </a-form-model-item>
             <a-form-model-item
               v-for="(item, index) in appConfig.schema"
@@ -52,6 +70,11 @@
                 :addon-before="k"
                 :value="item.params[k]"
                 @change="handleInputChange($event, index, k)"
+              />
+              <a-button
+                type="default"
+                icon="delete"
+                @click="removeDomain(index)"
               />
             </a-form-model-item>
             <a-form-model-item label="Schema 总览">
@@ -82,6 +105,8 @@
 </template>
 
 <script>
+import { cloneDeep } from 'lodash-es'
+import { getOrigin } from '@/utils/util'
 import API from '@/api'
 
 export default {
@@ -126,8 +151,10 @@ export default {
         domains: []
       },
 
+      getOrigin: getOrigin(),
       loading: true,
       appid: '',
+      defaultAppConfig: {},
       appConfig: {
         appid: '',
         project: '',
@@ -152,7 +179,8 @@ export default {
           this.appConfig = Object.assign({}, data, {
             schema: data.schema ? JSON.parse(data.schema) : ''
           })
-          console.log(this.appConfig.schema)
+          this.defaultAppConfig = cloneDeep(this.appConfig)
+          // console.log(this.appConfig.schema)
         }
       } catch (err) {
         console.log(err)
@@ -183,8 +211,13 @@ export default {
         this.openNotificationWithIcon('error', '发布失败', err)
       }
     },
-    removeDomain() {
-      // TODO
+    restoreApplicationConfig() {
+      if (this.defaultAppConfig) {
+        this.appConfig = cloneDeep(this.defaultAppConfig)
+      }
+    },
+    removeDomain(index) {
+      this.appConfig.schema.splice(index, 1)
     },
     addDomain() {
       const type = 'logger'
@@ -192,7 +225,7 @@ export default {
         type: type,
         params: this.schemaItem.get(type)
       })
-      console.log(this.appConfig.schema)
+      // console.log(this.appConfig.schema)
     },
     openNotificationWithIcon(type, title, desc) {
       this.$notification[type]({
@@ -200,16 +233,19 @@ export default {
         description: desc || ''
       })
     },
+    handleSwitchChange() {
+      // TODO
+    },
     handleSelectChange(e, index) {
       this.$set(this.appConfig.schema, index, {
         type: e,
         params: this.schemaItem.get(e)
       })
-      console.log(this.appConfig.schema[index])
+      // console.log(this.appConfig.schema[index])
     },
     handleInputChange(e, index, key) {
       this.$set(this.appConfig.schema[index].params, key, e.target.value)
-      console.log(this.appConfig.schema[index].params[key])
+      // console.log(this.appConfig.schema[index].params[key])
     }
   }
 }

@@ -2,7 +2,7 @@
  * @Author: Whzcorcd
  * @Date: 2020-07-16 17:12:09
  * @LastEditors: Wzhcorcd
- * @LastEditTime: 2020-07-20 19:53:04
+ * @LastEditTime: 2020-07-29 09:43:05
  * @Description: file content
  */
 /* eslint-disable */
@@ -114,7 +114,7 @@ Request.interceptors.response.use(
       if (Number(response.data.status) === 200) {
         return Promise.resolve(response)
       } else {
-        return Promise.reject(response.data.errornotification)
+        return Promise.reject(response.data.msg)
       }
     } else {
       // 请求已发出，在 2xx 的范围
@@ -127,7 +127,7 @@ Request.interceptors.response.use(
     if (err) {
       // 请求已发出，但是不在 2xx 的范围
       notification.error('请求响应异常')
-      errorHandle(err.status, err.data.errornotification)
+      errorHandle(err.status, err.data.msg)
       return Promise.reject(err)
     } else {
       // 处理断网的情况
@@ -138,8 +138,8 @@ Request.interceptors.response.use(
         notification.error('网络断开')
         // store.commit('changeNetwork', false)
       } else {
-        notification.error('未知错误')
-        return Promise.reject(error)
+        notification.error('网络异常')
+        return Promise.reject('网络异常')
       }
     }
   }
