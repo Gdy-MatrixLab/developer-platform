@@ -2,14 +2,14 @@
  * @Author: Whzcorcd
  * @Date: 2020-07-27 16:16:26
  * @LastEditors: Wzhcorcd
- * @LastEditTime: 2020-07-28 20:03:44
+ * @LastEditTime: 2020-08-03 15:31:20
  * @Description: file content
  */
 
 'use strict'
 
 module.exports = app => {
-  const { STRING, INTEGER, TEXT, DATE } = app.Sequelize
+  const { STRING, INTEGER, TEXT, DATE, BOOLEAN } = app.Sequelize
 
   const Rrweb = app.model.define(
     'rrweb',
@@ -24,10 +24,12 @@ module.exports = app => {
       end_time: { type: INTEGER, allowNull: false },
       created_at: DATE,
       updated_at: DATE,
-      is_use: { type: INTEGER, defaultValue: 1 },
+      is_use: { type: BOOLEAN, defaultValue: 1 },
     },
     {
-      timestamps: false,
+      timestamps: true,
+      createdAt: 'created_at',
+      updatedAt: 'updated_at',
       freezeTableName: true, // 不自动将表名添加复数
     }
   )

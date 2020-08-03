@@ -2,7 +2,7 @@
  * @Author: Whzcorcd
  * @Date: 2020-07-09 10:47:08
  * @LastEditors: Wzhcorcd
- * @LastEditTime: 2020-07-27 15:04:47
+ * @LastEditTime: 2020-08-03 15:42:07
  * @Description: file content
  */
 
@@ -52,6 +52,7 @@ class ConfigController extends Controller {
   /*
    * 创建新的 app 配置
    * @project app 名称
+   * @desc app 描述
    */
   async create() {
     const { ctx, service } = this
@@ -110,6 +111,8 @@ class ConfigController extends Controller {
    * 更新已有 app 配置
    * @appid appid
    * @project app 名称
+   * @desc app 描述
+   * @prod 是否应用至生产环境
    * @schema 配置
    */
   async update() {
@@ -118,6 +121,7 @@ class ConfigController extends Controller {
     const updateBodyRule = {
       project: { type: 'string', required: false },
       desc: { type: 'string', required: false },
+      prod: { type: 'boolean', required: false },
       schema: { type: 'string', required: false },
     }
 
@@ -131,12 +135,13 @@ class ConfigController extends Controller {
     }
 
     const { id } = ctx.params
-    const { project, desc, schema } = ctx.request.body
+    const { project, desc, prod, schema } = ctx.request.body
 
     const res = await service.config.update({
       appid: id,
       project,
       desc,
+      prod,
       schema,
     })
 

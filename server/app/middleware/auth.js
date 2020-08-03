@@ -2,7 +2,7 @@
  * @Author: Whzcorcd
  * @Date: 2020-07-15 14:15:09
  * @LastEditors: Wzhcorcd
- * @LastEditTime: 2020-07-15 17:33:54
+ * @LastEditTime: 2020-08-03 19:04:01
  * @Description: file content
  */
 
@@ -29,6 +29,18 @@ module.exports = (options, app) => {
       // 验证 token 是否在缓存中
       if (cachedToken && token === cachedToken) {
         ctx.state.user = { username }
+
+        // 记录审计规则
+        await ctx.model.Agents.create({
+          operater: username,
+          method: ctx.request.method,
+          url: ctx.request.url,
+          query: ctx.query,
+          body: ctx.request.body,
+          referer: ctx.request.header.referer,
+          user_agent: ctx.request.header['user-agent'],
+        })
+
         return await next()
       }
 

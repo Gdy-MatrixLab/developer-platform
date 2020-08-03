@@ -2,7 +2,7 @@
  * @Author: Whzcorcd
  * @Date: 2020-07-13 14:55:37
  * @LastEditors: Wzhcorcd
- * @LastEditTime: 2020-07-24 17:11:54
+ * @LastEditTime: 2020-08-03 10:18:02
  * @Description: file content
  */
 
@@ -12,6 +12,7 @@ const logger = require('./logger')
 const script = require('./script')
 const listener = require('./listener')
 const message = require('./message')
+const variate = require('./variate')
 
 const modules = new Map([
   [
@@ -36,6 +37,12 @@ const modules = new Map([
     'message',
     params => {
       return message(params)
+    },
+  ],
+  [
+    'variate',
+    params => {
+      return variate(params)
     },
   ],
 ])

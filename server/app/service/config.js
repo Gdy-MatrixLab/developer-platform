@@ -2,7 +2,7 @@
  * @Author: Whzcorcd
  * @Date: 2020-07-09 13:43:58
  * @LastEditors: Wzhcorcd
- * @LastEditTime: 2020-07-28 10:24:35
+ * @LastEditTime: 2020-08-03 16:01:00
  * @Description: file content
  */
 
@@ -86,7 +86,12 @@ class ConfigService extends Service {
     })
 
     // 同步创建新的动态代码仓库
-    const resSource = this.publish(params.appid, params.schema, false)
+    const resSource = this.publish(
+      params.appid,
+      params.prod,
+      params.schema,
+      false
+    )
 
     return resConfig && resSource
   }
@@ -115,15 +120,16 @@ class ConfigService extends Service {
   /*
    * 发布动态代码
    * @appid appid
+   * @prod 是否应用至生产环境
    * @schema 配置（默认空）
    * @reset 是否重置（默认否）
    */
-  async publish(appid, schema = '', reset = false) {
+  async publish(appid, prod, schema = '', reset = false) {
     const { ctx } = this
 
     if (!appid) return null
 
-    if (reset) {
+    if (reset || !prod) {
       return await ctx.service.source.write(appid, '')
     }
 

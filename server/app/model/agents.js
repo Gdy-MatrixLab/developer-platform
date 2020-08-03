@@ -1,8 +1,8 @@
 /*
  * @Author: Whzcorcd
- * @Date: 2020-07-09 17:25:43
+ * @Date: 2020-08-03 16:54:06
  * @LastEditors: Wzhcorcd
- * @LastEditTime: 2020-08-03 15:33:20
+ * @LastEditTime: 2020-08-03 19:04:36
  * @Description: file content
  */
 
@@ -11,15 +11,17 @@
 module.exports = app => {
   const { STRING, INTEGER, DATE, JSON, BOOLEAN } = app.Sequelize
 
-  const Config = app.model.define(
-    'config',
+  const Agents = app.model.define(
+    'agents',
     {
       id: { type: INTEGER, primaryKey: true, autoIncrement: true },
-      appid: { type: STRING(255), allowNull: false },
-      project: { type: STRING(255), allowNull: false },
-      desc: { type: STRING(2000), allowNull: false },
-      prod: { type: BOOLEAN, allowNull: false, defaultValue: 1 },
-      schema: { type: JSON, allowNull: false },
+      operater: { type: STRING(255), allowNull: false },
+      method: { type: STRING(20), allowNull: false },
+      url: { type: STRING(500), allowNull: false },
+      query: { type: JSON, allowNull: false },
+      body: { type: JSON, allowNull: false },
+      referer: { type: STRING(500), allowNull: false },
+      user_agent: { type: STRING(400), allowNull: false },
       created_at: DATE,
       updated_at: DATE,
       is_use: { type: BOOLEAN, defaultValue: 1 },
@@ -32,5 +34,5 @@ module.exports = app => {
     }
   )
 
-  return Config
+  return Agents
 }

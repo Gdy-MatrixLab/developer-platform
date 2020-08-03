@@ -2,7 +2,7 @@
  * @Author: Whzcorcd
  * @Date: 2020-07-09 12:22:57
  * @LastEditors: Wzhcorcd
- * @LastEditTime: 2020-07-28 19:59:48
+ * @LastEditTime: 2020-08-03 11:09:48
  * @Description: file content
  */
 
@@ -22,10 +22,21 @@ module.exports = () => {
     username: 'root',
     password: 'guangdianyun',
     database: 'developer_platform',
+    timezone: '+08:00',
     define: {
+      underscored: true,
+      freezeTableName: true,
       charset: 'utf8mb4',
       dialectOptions: {
         collate: 'utf8mb4_general_ci',
+        dateStrings: true,
+        typeCast(field, next) {
+          // for reading from database
+          if (field.type === 'DATETIME') {
+            return field.string()
+          }
+          return next()
+        },
       },
     },
     operatorsAliases: 0,

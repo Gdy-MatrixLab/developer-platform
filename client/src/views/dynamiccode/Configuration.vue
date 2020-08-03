@@ -2,7 +2,7 @@
  * @Author: Whzcorcd
  * @Date: 2020-07-23 11:45:04
  * @LastEditors: Wzhcorcd
- * @LastEditTime: 2020-07-29 10:39:45
+ * @LastEditTime: 2020-08-03 15:41:30
  * @Description: file content
 -->
 <template>
@@ -36,6 +36,11 @@
                 {{ getOrigin }}/api/v1/source/{{ appConfig.appid }}
               </span>
             </a-form-model-item>
+            <a-form-model-item ref="project" label="最后提交" prop="updated_at">
+              <span style="font-weight: bold">
+                {{ appConfig.updated_at }}
+              </span>
+            </a-form-model-item>
             <a-form-model-item ref="project" label="应用名称" prop="project">
               <a-input v-model="appConfig.project" />
             </a-form-model-item>
@@ -43,7 +48,11 @@
               <a-input v-model="appConfig.desc" />
             </a-form-model-item>
             <a-form-model-item ref="prod" label="生产环境" prop="prod">
-              <a-switch default-checked @change="handleSwitchChange($event)" />
+              <a-switch
+                v-model="appConfig.prod"
+                default-checked
+                @change="handleSwitchChange($event)"
+              />
             </a-form-model-item>
             <a-form-model-item
               v-for="(item, index) in appConfig.schema"
@@ -71,6 +80,16 @@
                 :value="item.params[k]"
                 @change="handleInputChange($event, index, k)"
               />
+              <a-collapse v-if="encode(item.type)" accordion>
+                <a-collapse-panel key="editor" header="代码编辑器">
+                  <codemirror
+                    class="CodeMirror"
+                    :value="item.params[encode(item.type)]"
+                    :options="cmOptions"
+                    @input="handleInputChange($event, index, encode(item.type))"
+                  />
+                </a-collapse-panel>
+              </a-collapse>
               <a-button
                 type="default"
                 icon="delete"
@@ -78,20 +97,22 @@
               />
             </a-form-model-item>
             <a-form-model-item label="Schema 总览">
-              <a-input
+              <codemirror
+                class="CodeMirror"
+                ref="cmEditor"
                 :value="JSON.stringify(appConfig.schema)"
-                type="textarea"
-                :rows="8"
-                read-only
+                :options="
+                  Object.assign({}, cmOptions, {
+                    readOnly: true
+                  })
+                "
+              />
+              <a-button
+                type="default"
+                icon="align-left"
+                @click="handleFormatClick"
               />
             </a-form-model-item>
-            <!-- <a-form-model-item label="JSON 解析树">
-              <tree-view
-                :data="JSON.parse(appConfig.schema)"
-                :options="{ maxDepth: 3 }"
-              >
-              </tree-view>
-            </a-form-model-item> -->
             <a-form-model-item :wrapper-col="{ span: 20, offset: 5 }">
               <a-button type="dashed" style="width: 60%" @click="addDomain">
                 <a-icon type="plus" /> 增加配置项
@@ -105,43 +126,84 @@
 </template>
 
 <script>
+import { codemirror } from 'vue-codemirror'
+import 'codemirror/lib/codemirror.css'
+import 'codemirror/mode/javascript/javascript'
+import 'codemirror/addon/hint/javascript-hint'
+import '@/utils/formatter'
+// import theme style
+import 'codemirror/theme/idea.css'
+
 import { cloneDeep } from 'lodash-es'
 import { getOrigin } from '@/utils/util'
 import API from '@/api'
 
 export default {
   name: 'Configuration',
+  components: {
+    codemirror
+  },
   data() {
     const schemaItem = new Map([
       ['logger', { level: '', msg: '' }],
       ['script', { url: '', async: '', onload: '' }],
       ['listener', { target: '', listener: '', content: '' }],
-      ['message', { subkey: '', topic: '', actions: '' }]
+      ['message', { subkey: '', topic: '', actions: '' }],
+      ['variate', { var: '', data: '' }]
     ])
     return {
+      cmOptions: {
+        tabSize: 2,
+        mode: {
+          name: 'javascript',
+          json: true
+        },
+        theme: 'idea',
+        lineNumbers: true,
+        line: true,
+        lineWrapping: 'warp',
+        cursorHeight: 1,
+        extraKeys: {
+          F7: editor => {
+            const totalLines = editor.lineCount()
+            editor.autoFormatRange({ line: 0, ch: 0 }, { line: totalLines })
+          }
+        }
+      },
       options: [
         {
           name: '控制台输出',
           value: 'logger',
+          editor: false,
           params: ['level', 'msg']
         },
         {
           name: '脚本加载',
           value: 'script',
+          editor: 'onload',
           params: ['url', 'async', 'onload']
         },
         {
           name: '全局侦听器',
           value: 'listener',
+          editor: 'content',
           params: ['target', 'listener', 'content']
         },
         {
           name: 'DMS 消息通知',
           value: 'message',
+          editor: 'actions',
           params: ['subkey', 'topic', 'actions']
+        },
+        {
+          name: '全局变量',
+          value: 'variate',
+          editor: 'data',
+          params: ['var', 'data']
         }
       ],
       schemaItem: schemaItem,
+      timer: null,
 
       formItemLayout: {
         labelCol: { span: 4 },
@@ -159,6 +221,16 @@ export default {
         appid: '',
         project: '',
         schema: ''
+      }
+    }
+  },
+  computed: {
+    codemirror() {
+      return this.$refs.cmEditor.codemirror
+    },
+    encode() {
+      return type => {
+        return this.options.filter(ele => ele.value === type)[0].editor
       }
     }
   },
@@ -191,6 +263,7 @@ export default {
         const params = {
           project: this.appConfig.project,
           desc: this.appConfig.desc,
+          prod: this.appConfig.prod,
           schema: JSON.stringify(this.appConfig.schema)
         }
         const response = await API.Config.config_update(this.appid, params)
@@ -244,8 +317,21 @@ export default {
       // console.log(this.appConfig.schema[index])
     },
     handleInputChange(e, index, key) {
+      if (typeof e === 'string') {
+        this.$set(this.appConfig.schema[index].params, key, e)
+        return
+      }
       this.$set(this.appConfig.schema[index].params, key, e.target.value)
-      // console.log(this.appConfig.schema[index].params[key])
+    },
+    handleFormatClick() {
+      const totalLines = this.codemirror.lineCount()
+      this.timer = setTimeout(() => {
+        clearTimeout(this.timer)
+        this.codemirror.autoFormatRange(
+          { line: 0, ch: 0 },
+          { line: totalLines }
+        )
+      }, 500)
     }
   }
 }
@@ -266,5 +352,19 @@ export default {
 .dynamic-delete-button[disabled] {
   cursor: not-allowed;
   opacity: 0.5;
+}
+.CodeMirror {
+  border: 1px solid #eee;
+  height: auto;
+  line-height: 120%;
+}
+</style>
+
+<style lang="less">
+.ant-collapse-content > .ant-collapse-content-box {
+  padding: 0;
+}
+.CodeMirror-lines {
+  font-size: 12px;
 }
 </style>
