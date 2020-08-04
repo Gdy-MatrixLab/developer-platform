@@ -2,7 +2,7 @@
  * @Author: Whzcorcd
  * @Date: 2020-07-09 10:36:59
  * @LastEditors: Wzhcorcd
- * @LastEditTime: 2020-07-28 10:15:48
+ * @LastEditTime: 2020-08-04 09:36:28
  * @Description: file content
  */
 
@@ -48,4 +48,12 @@ module.exports = app => {
 
   // 动态代码获取
   router.resources('source', '/api/v1/source', controller.source)
+
+  // 动态代码配置
+  router.resources(
+    'audit',
+    '/api/v1/audit',
+    middleware.auth({}, app),
+    controller.audit
+  )
 }

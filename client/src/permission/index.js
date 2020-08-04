@@ -2,7 +2,7 @@
  * @Author: Whzcorcd
  * @Date: 2020-07-16 15:36:02
  * @LastEditors: Wzhcorcd
- * @LastEditTime: 2020-07-23 16:57:58
+ * @LastEditTime: 2020-08-04 10:34:00
  * @Description: file content
  */
 import router from '@/router'
@@ -63,6 +63,14 @@ router.beforeEach((to, from, next) => {
         }
         return next()
       }
+    } else {
+      // 本地 token 不存在，强制清除缓存
+      store.dispatch('user/Logout').finally(() => {
+        return next({
+          path: loginRoutePath,
+          query: { redirect: to.fullPath }
+        })
+      })
     }
   }
 })

@@ -1,19 +1,19 @@
 /*
  * @Author: Whzcorcd
- * @Date: 2020-08-03 16:43:20
+ * @Date: 2020-08-03 16:54:06
  * @LastEditors: Wzhcorcd
- * @LastEditTime: 2020-08-03 19:04:29
+ * @LastEditTime: 2020-08-04 09:24:18
  * @Description: file content
  */
 
 'use strict'
 
-module.exports = {
-  // 在执行数据库升级时调用的函数，创建 users 表
-  up: async (queryInterface, Sequelize) => {
-    const { INTEGER, STRING, DATE, JSON, BOOLEAN } = Sequelize
+module.exports = app => {
+  const { STRING, INTEGER, DATE, JSON, BOOLEAN } = app.Sequelize
 
-    await queryInterface.createTable('agents', {
+  const Audits = app.model.define(
+    'audits',
+    {
       id: { type: INTEGER, primaryKey: true, autoIncrement: true },
       operater: { type: STRING(255), allowNull: false },
       method: { type: STRING(20), allowNull: false },
@@ -25,10 +25,14 @@ module.exports = {
       created_at: DATE,
       updated_at: DATE,
       is_use: { type: BOOLEAN, defaultValue: 1 },
-    })
-  },
-  // 在执行数据库降级时调用的函数，删除 users 表
-  down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('agents')
-  },
+    },
+    {
+      timestamps: true,
+      createdAt: 'created_at',
+      updatedAt: 'updated_at',
+      freezeTableName: true, // 不自动将表名添加复数
+    }
+  )
+
+  return Audits
 }

@@ -127,7 +127,7 @@ export default {
     handlePaginationChange(e) {
       if (e) {
         this.page = Number(e)
-        this.getApplications()
+        this.getProjects()
       }
     }
   }

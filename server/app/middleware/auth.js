@@ -2,7 +2,7 @@
  * @Author: Whzcorcd
  * @Date: 2020-07-15 14:15:09
  * @LastEditors: Wzhcorcd
- * @LastEditTime: 2020-08-03 19:04:01
+ * @LastEditTime: 2020-08-04 09:23:04
  * @Description: file content
  */
 
@@ -31,7 +31,7 @@ module.exports = (options, app) => {
         ctx.state.user = { username }
 
         // 记录审计规则
-        await ctx.model.Agents.create({
+        await ctx.model.Audits.create({
           operater: username,
           method: ctx.request.method,
           url: ctx.request.url,

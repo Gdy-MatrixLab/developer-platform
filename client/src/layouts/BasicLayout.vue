@@ -2,7 +2,7 @@
  * @Author: Whzcorcd
  * @Date: 2020-07-15 18:25:19
  * @LastEditors: Wzhcorcd
- * @LastEditTime: 2020-07-27 16:47:35
+ * @LastEditTime: 2020-08-04 10:40:53
  * @Description: file content
 -->
 <template>
@@ -21,7 +21,8 @@
       <right-content :top-menu="false" theme="dark" />
     </template>
     <template v-slot:footerRender>
-      <global-footer />
+      <!-- <global-footer /> -->
+      <div></div>
     </template>
     <router-view />
   </pro-layout>
@@ -30,15 +31,15 @@
 <script>
 import routes from '@/router/routes'
 import RightContent from '@/components/GlobalHeader/RightContent'
-import GlobalFooter from '@/components/GlobalFooter'
+// import GlobalFooter from '@/components/GlobalFooter'
 
 import LogoSvg from '@/assets/logo.svg?inline'
 
 export default {
   name: 'BasicLayout',
   components: {
-    RightContent,
-    GlobalFooter
+    RightContent
+    // GlobalFooter
   },
   data() {
     return {

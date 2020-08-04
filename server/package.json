@@ -46,7 +46,11 @@
     "cov": "egg-bin cov",
     "lint": "eslint .",
     "ci": "npm run lint && npm run cov",
-    "autod": "autod"
+    "autod": "autod",
+    "sequelize:init": "npx sequelize init:config && npx sequelize init:migrations",
+    "sequelize:generate": "npx sequelize migration:generate --name=init-xxxx",
+    "sequelize:up": "npx sequelize db:migrate",
+    "sequelize:undo": "npx sequelize db:migrate:undo"
   },
   "ci": {
     "version": "10"

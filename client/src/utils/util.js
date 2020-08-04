@@ -2,7 +2,7 @@
  * @Author: Whzcorcd
  * @Date: 2020-07-15 18:25:19
  * @LastEditors: Wzhcorcd
- * @LastEditTime: 2020-07-29 10:57:49
+ * @LastEditTime: 2020-08-04 10:18:13
  * @Description: file content
  */
 import dayjs from 'dayjs'
@@ -11,8 +11,11 @@ export function getOrigin() {
   return document.location.origin
 }
 
-export function timeFormat(timestamp = 0) {
-  return dayjs(timestamp * 1000).format('YYYY-MM-DD HH:mm:ss')
+export function timeFormat(timestamp) {
+  if (typeof timestamp === 'number')
+    return dayjs(timestamp * 1000).format('YYYY-MM-DD HH:mm:ss')
+  if (typeof timestamp === 'string')
+    return dayjs(timestamp).format('YYYY-MM-DD HH:mm:ss')
 }
 
 export function timeFix() {

@@ -2,7 +2,7 @@
  * @Author: Whzcorcd
  * @Date: 2020-07-23 11:45:04
  * @LastEditors: Wzhcorcd
- * @LastEditTime: 2020-08-03 15:41:30
+ * @LastEditTime: 2020-08-04 10:15:04
  * @Description: file content
 -->
 <template>
@@ -38,7 +38,7 @@
             </a-form-model-item>
             <a-form-model-item ref="project" label="最后提交" prop="updated_at">
               <span style="font-weight: bold">
-                {{ appConfig.updated_at }}
+                {{ timeFormat(appConfig.updated_at) }}
               </span>
             </a-form-model-item>
             <a-form-model-item ref="project" label="应用名称" prop="project">
@@ -126,6 +126,8 @@
 </template>
 
 <script>
+import { timeFormat } from '@/utils/util'
+
 import { codemirror } from 'vue-codemirror'
 import 'codemirror/lib/codemirror.css'
 import 'codemirror/mode/javascript/javascript'
@@ -152,6 +154,8 @@ export default {
       ['variate', { var: '', data: '' }]
     ])
     return {
+      timeFormat: timeFormat,
+
       cmOptions: {
         tabSize: 2,
         mode: {
